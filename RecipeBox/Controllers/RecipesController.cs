@@ -1,3 +1,8 @@
+using System;
+using System.Data;
+using System.Net;
+using PagedList;
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +28,7 @@ namespace RecipeBox.Controllers
       _db = db;
     }
 
+    /*
     public async Task<ActionResult> Index()
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -30,6 +36,46 @@ namespace RecipeBox.Controllers
       var userRecipes = _db.Recipes.Where(entry => entry.User.Id == currentUser.Id).ToList();
       return View(userRecipes);
     }
+    */
+    
+    public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+    {
+      ViewBag.CurrentSort = sortOrder;
+      ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+      
+      if (searchString != null)
+      {
+        page = 1;
+      }
+      else
+      {
+        searchString = currentFilter;
+      }
+      ViewBag.CurrentFilter = searchString;
+      var recipes = from s in _db.Recipes
+                    select s;
+      if (!String.IsNullOrEmpty(searchString))
+      {
+        recipes = recipes.Where(s => s.Name.Contains(searchString));
+      }
+      switch (sortOrder)
+      {
+        case "name_desc":
+            recipes = recipes.OrderByDescending(s => s.Name);
+            break;
+        default:
+            recipes = recipes.OrderBy(s => s.Name);
+            break;
+      }
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      var userRecipes = _db.Recipes.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      int pageSize = 2;
+      int pageNumber = (page ?? 1);
+      return View(userRecipes.ToPagedList(pageNumber, pageSize));
+    }
+    
+  
 
     public ActionResult Create()
     {

@@ -17,12 +17,13 @@
 <table class="table">
   <tr>
       <th>
-          @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        Name
+          @* @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) *@
       </th>
       
-      <th>
+      @* <th>
           @Html.ActionLink("Recipe", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
-      </th>
+      </th> *@
   </tr>
   <tr>
     @if (@Model.Count == 0)

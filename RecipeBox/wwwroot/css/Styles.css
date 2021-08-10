@@ -1,3 +1,14 @@
 #container {
   min-height: 768px;
 }
+
+#footer{
+  color: gray;
+  bottom: 0;
+  position: fixed;
+}
+
+#Email, #Password, #ConfirmPassword, #SearchString, #Name {
+  margin-left: 5px;
+  margin-right: 18px;
+}
