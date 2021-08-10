@@ -3,6 +3,7 @@ using System.Data;
 using System.Net;
 using PagedList;
 using System.Web;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +54,8 @@ namespace RecipeBox.Controllers
       }
       ViewBag.CurrentFilter = searchString;
       var recipes = from s in _db.Recipes
-                    select s;
+        select s;
+
       if (!String.IsNullOrEmpty(searchString))
       {
         recipes = recipes.Where(s => s.Name.Contains(searchString));
@@ -61,11 +63,11 @@ namespace RecipeBox.Controllers
       switch (sortOrder)
       {
         case "name_desc":
-            recipes = recipes.OrderByDescending(s => s.Name);
-            break;
+          recipes = recipes.OrderByDescending(s => s.Name);
+          break;
         default:
-            recipes = recipes.OrderBy(s => s.Name);
-            break;
+          recipes = recipes.OrderBy(s => s.Name);
+          break;
       }
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
@@ -74,8 +76,12 @@ namespace RecipeBox.Controllers
       int pageNumber = (page ?? 1);
       return View(userRecipes.ToPagedList(pageNumber, pageSize));
     }
-    
-  
+
+    [HttpPost]
+    public string Index(string searchString, bool notUsed)
+    {
+      return "From [HttpPost]Index: filter on " + searchString;
+    }
 
     public ActionResult Create()
     {

@@ -2,14 +2,21 @@
 @{
   Layout = "_Layout";
 }
-@model PagedList.IPagedList<RecipeBox.Models.Recipe>
-@using PagedList.Mvc;
-@using RecipeBox.Models;
+@model RecipeBox.Models.Recipe
 
 <h2>Recipe Details</h2>
 <hr />
-<h3>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</h3>
-
+<h3>@Html.DisplayFor(model => model.Name)</h3>
+@using (Html.BeginForm("Index", "Recipe", FormMethod.Get))
+{
+  <p>
+    Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+    <input type="submit" value="Search" />
+  </p>
+}
+<table class="table">
+  <tr>
+</table>
 @if(@Model.JoinEntities.Count == 0)
 {
   <p>This item does not belong to any categories</p>
@@ -34,9 +41,4 @@ else
 
 <p>@Html.ActionLink("Back to list", "Index")</p>
 <p>@Html.ActionLink("Edit Item", "Edit", new { id = Model.RecipeId })</p>
-<p>@Html.ActionLink("Delete Item", "Delete", new { id = Model.RecipeId })</p> 
-
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index", 
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+<p>@Html.ActionLink("Delete Item", "Delete", new { id = Model.RecipeId })</p>
