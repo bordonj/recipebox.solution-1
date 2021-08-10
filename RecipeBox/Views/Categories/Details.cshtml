@@ -22,7 +22,8 @@
     {
         @foreach (var join in Model.JoinEntities)
         {
-          <p>@join.Recipe.Ingredient</p>
+
+          <p>@Html.ActionLink($"{join.Recipe.Name}", "Details", new { id = join.Recipe.RecipeId })</p>
           @using (Html.BeginForm("DeleteRecipe", "Recipes"))
           {
             @Html.Hidden("joinId", @join.CategoryRecipeId)
