@@ -1,0 +1,25 @@
+@{
+  Layout = "_Layout";
+}
+
+@model RecipeBox.Models.Category
+
+<h3><i class="bi bi-exclamation-octagon-fill"></i> Are you sure you want to delete this? <i class="bi bi-exclamation-octagon-fill"></i></h3>
+<hr />
+<dd>
+  @Html.DisplayNameFor(model => model.Name) : @Html.DisplayFor(model => model.Name)
+</dd>
+
+@using (Html.BeginForm())
+{
+  <tr>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+      </div>
+    </div>
+  </tr>
+}
+<p>
+  @Html.ActionLink("Back to list", "Index")
+</p

@@ -1,0 +1,41 @@
+@{
+  Layout = "_Layout";
+}
+
+@model RecipeBox.Models.Category
+
+<h3>Category Details</h3>
+<div>
+  <hr />
+  <dl class="dl-horizontal">
+    <dt>
+      <h3>@Html.DisplayFor(model => model.Name)</h3>
+    </dt>
+
+    @if(@Model.JoinEntities.Count == 0)
+    {
+      <dt>
+        <i class="bi bi-exclamation-triangle"></i> This category does not contain any Recipes <i class="bi bi-exclamation-triangle"></i>
+      </dt>
+    }
+    else
+    {
+        @foreach (var join in Model.JoinEntities)
+        {
+          <p>@join.Recipe.Ingredient</p>
+          @using (Html.BeginForm("DeleteRecipe", "Recipes"))
+          {
+            @Html.Hidden("joinId", @join.CategoryRecipeId)
+            <input type="submit" value="Delete" class="btn btn-danger" />
+          }
+          
+        }
+    }
+  </dl>
+</div>
+<p>
+  @Html.ActionLink("Back to Category", "Index") |
+  @Html.ActionLink("Add Recipe", "AddRecipe", new { id = Model.CategoryId }) |
+  @Html.ActionLink("Edit Category", "Edit", new { id = Model.CategoryId}) |
+  @Html.ActionLink("Delete Category", "Delete", new { id = Model.CategoryId })
+</p>
