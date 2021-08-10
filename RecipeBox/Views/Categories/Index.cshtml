@@ -4,21 +4,21 @@
 
 @using RecipeBox.Models;
 
-<h2>Categories</h2>
-
 @using (Html.BeginForm("Index", "Category", FormMethod.Get))
 {
-  <p>
-    Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-    <button type="submit" value="Search" class="btn btn-outline-success btn-sm">Search</button>
-  </p>
+  <div class="float-right">
+    <p>
+      Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+      <button type="submit" value="Search" class="btn btn-outline-success btn-sm">Search</button>
+    </p>
+  </div>
 }
-
+<div class="centered">
 <table class="table">
   <tr>
-    <th>
-      Name
-    </th>
+    <td>
+      <h3>Category Name</h3>
+    </td>
   </tr>
   <tr>
     @if (@Model.Count == 0)
@@ -30,14 +30,19 @@
   </tr>
     @foreach(Category category in Model)
     {
-      <tr>
-        <td>
-            @Html.ActionLink($"{category.Name}", "Details", new { id = category.CategoryId })
-        </td>
-      </tr>
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th>
+              @Html.ActionLink($"{category.Name}", "Details", new { id = category.CategoryId })
+            </th>
+          </tr>
+        </thead>
+      </table>
     }
 </table>
 <td>
     @Html.ActionLink("Add a category", "Create")
 </td>
 <h5>@Html.ActionLink("Main Menu", "Index", "Home")</h5>
+</div>

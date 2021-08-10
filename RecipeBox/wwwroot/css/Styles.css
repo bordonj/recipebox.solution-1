@@ -26,3 +26,10 @@ body {
 h1, h2 {
   margin-bottom: 25px;
 }
+.centered{
+  text-align: center;
+}
+
+.float-right{
+  float: right;
+}
