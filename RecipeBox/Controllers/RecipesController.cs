@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Net;
-using PagedList;
 using System.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Authorization;
@@ -41,18 +40,8 @@ namespace RecipeBox.Controllers
     
     public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
     {
-      ViewBag.CurrentSort = sortOrder;
       ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
       
-      if (searchString != null)
-      {
-        page = 1;
-      }
-      else
-      {
-        searchString = currentFilter;
-      }
-      ViewBag.CurrentFilter = searchString;
       var recipes = from s in _db.Recipes
         select s;
 
@@ -69,12 +58,12 @@ namespace RecipeBox.Controllers
           recipes = recipes.OrderBy(s => s.Name);
           break;
       }
+      // all of it was ignored
+
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      var userRecipes = _db.Recipes.Where(entry => entry.User.Id == currentUser.Id).ToList();
-      int pageSize = 2;
-      int pageNumber = (page ?? 1);
-      return View(userRecipes.ToPagedList(pageNumber, pageSize));
+      var userRecipes = recipes.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      return View(userRecipes);
     }
 
     [HttpPost]

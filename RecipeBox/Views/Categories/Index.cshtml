@@ -4,26 +4,21 @@
 
 @using RecipeBox.Models;
 
-<h3>Categories</h3>
+<h2>Categories</h2>
 
 @using (Html.BeginForm("Index", "Category", FormMethod.Get))
 {
   <p>
     Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-    <input type="submit" value="Search" />
+    <button type="submit" value="Search" class="btn btn-outline-success btn-sm">Search</button>
   </p>
 }
 
 <table class="table">
   <tr>
-      <th>
-        Name
-          @* @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) *@
-      </th>
-      
-      @* <th>
-          @Html.ActionLink("Recipe", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
-      </th> *@
+    <th>
+      Name
+    </th>
   </tr>
   <tr>
     @if (@Model.Count == 0)
@@ -45,3 +40,4 @@
 <td>
     @Html.ActionLink("Add a category", "Create")
 </td>
+<h5>@Html.ActionLink("Main Menu", "Index", "Home")</h5>

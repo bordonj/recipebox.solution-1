@@ -11,12 +11,24 @@
     <p>Hello @User.Identity.Name!</p>
     @using (Html.BeginForm("LogOff", "Account"))
     {
-        <input type="submit" class="btn btn-default" value="Log out" />
+      <button type="submit" class="btn btn-outline-danger" value="Log out">Log Out</button>
     }
 }
 else
 {
-    <p>@Html.ActionLink("Register", "Register")</p>
-    <p>@Html.ActionLink("Log in", "Login")</p>
+<a
+  asp-controller="Account"
+  asp-action="Register"
+  class="btn btn-outline-secondary"
+>Register</a>
+<a
+  asp-controller="Account"
+  asp-action="Login"
+  class="btn btn-outline-secondary"
+>Log In</a>
 }
-<p>@Html.ActionLink("Home", "Index", "Home")</p>
+<a
+  asp-controller="Home"
+  asp-action="Index"
+  class="btn btn-outline-primary"
+>Main Menu</a>

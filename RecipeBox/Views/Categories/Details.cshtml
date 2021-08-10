@@ -4,7 +4,7 @@
 
 @model RecipeBox.Models.Category
 
-<h3>Category Details</h3>
+<h2>Category Details</h2>
 <div>
   <hr />
   <dl class="dl-horizontal">
@@ -26,7 +26,7 @@
           @using (Html.BeginForm("DeleteRecipe", "Recipes"))
           {
             @Html.Hidden("joinId", @join.CategoryRecipeId)
-            <input type="submit" value="Delete" class="btn btn-danger" />
+            <button type="submit" value="Delete" class="btn btn-outline-danger btn-sm">Delete</button>
           }
           
         }

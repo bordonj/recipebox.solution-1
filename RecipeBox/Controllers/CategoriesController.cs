@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RecipeBox.Models;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,6 +44,7 @@ namespace RecipeBox.Controllers
           .FirstOrDefault(category => category.CategoryId == id);
       return View(thisCategory);
     }
+    
     public ActionResult Edit(int id)
     {
       var thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
