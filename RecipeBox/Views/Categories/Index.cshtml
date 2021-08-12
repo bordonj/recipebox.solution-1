@@ -3,46 +3,39 @@
 }
 
 @using RecipeBox.Models;
+@model List<RecipeBox.Models.Category>;
 
-@using (Html.BeginForm("Index", "Category", FormMethod.Get))
+<h1>Category List</h1>
+
+@using (Html.BeginForm("Index", "Categories", FormMethod.Get))
 {
-  <div class="float-right">
-    <p>
-      Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+  <p>
+    Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
       <button type="submit" value="Search" class="btn btn-outline-success btn-sm">Search</button>
-    </p>
-  </div>
+
+  </p>
 }
-<div class="centered">
+
 <table class="table">
   <tr>
-    <td>
-      <h3>Category Name</h3>
-    </td>
+
   </tr>
-  <tr>
-    @if (@Model.Count == 0)
-    {
-      <th>
-        <h3>No Categories have been added yet!</h3>
-      </th>
-    }
-  </tr>
-    @foreach(Category category in Model)
-    {
-      <table class="table table-borderless">
-        <thead>
-          <tr>
-            <th>
-              @Html.ActionLink($"{category.Name}", "Details", new { id = category.CategoryId })
-            </th>
-          </tr>
-        </thead>
-      </table>
-    }
 </table>
-<td>
-    @Html.ActionLink("Add a category", "Create")
-</td>
+
+@if (@Model.Count == 0)
+{
+  <h3><i class="bi bi-exclamation-triangle"></i> No Categories have been added yet!<i class="bi bi-exclamation-triangle"></i></h3>
+}
+<ul>
+  @foreach (Category recipe in Model)
+  {
+    <li>
+      @Html.ActionLink($"{recipe.Name}", "Details", new { id = recipe.CategoryId })
+    </li>
+
+  }
+</ul>
+
+
+<h5>@Html.ActionLink("Add a new category", "Create")</h5>
 <h5>@Html.ActionLink("Main Menu", "Index", "Home")</h5>
-</div>

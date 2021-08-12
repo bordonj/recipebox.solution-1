@@ -1,3 +1,10 @@
+using System;
+using System.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +18,53 @@ namespace RecipeBox.Controllers
   public class CategoriesController : Controller
   {
     private readonly RecipeBoxContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public CategoriesController(RecipeBoxContext db)
+    public CategoriesController(UserManager<ApplicationUser> userManager, RecipeBoxContext db)
     {
+      _userManager = userManager;
       _db = db;
     }
 
-    public ActionResult Index()
+    // public ActionResult Index()
+    // {
+    //   List<Category> model = _db.Categories.ToList();
+    //   return View(model);
+    // }
+
+    public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
     {
-      List<Category> model = _db.Categories.ToList();
-      return View(model);
+      ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+      
+      var categories = from s in _db.Categories
+        select s;
+
+      if (!String.IsNullOrEmpty(searchString))
+      {
+        categories = categories.Where(s => s.Name.Contains(searchString));
+      }
+      switch (sortOrder)
+      {
+        case "name_desc":
+          categories = categories.OrderByDescending(s => s.Name);
+          break;
+        default:
+          categories = categories.OrderBy(s => s.Name);
+          break;
+      }
+
+      // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      // var currentUser = await _userManager.FindByIdAsync(userId);
+      // var userCategories = categories.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      // don't need these for categories cuz don't need to login to view or add
+      return View(categories.ToList());
     }
 
+    [HttpPost]
+    public string Index(string searchString, bool notUsed)
+    {
+      return "From [HttpPost]Index: filter on " + searchString;
+    }
     public ActionResult Create()
     {
       return View();
